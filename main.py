@@ -2,7 +2,9 @@ from parser import Parser
 
 def main():
     print("Hack Assembler")
-    parser = Parser("Add.asm")
+    p = Parser("Add.asm")
+    while p.hasMoreCommand:
+        p.advance()
 
 if __name__ == "__main__":
     main()

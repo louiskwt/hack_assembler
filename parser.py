@@ -1,9 +1,10 @@
 import os, re
 
 class Parser:
-    current = 0
+    current = None
     hasMoreCommand = None
     commands = []
+    currentCommand = None
 
     def __init__(self, path=None):
         if path is not None:
@@ -20,8 +21,16 @@ class Parser:
                     if command:
                         self.commands.append(command)
             self.hasMoreCommand = True
-            print(self.commands)
+            self.current = -1
         except IOError as e:
             print("An Error occurred when opening file", e)
-        
-        
+    
+    def advance(self):
+        if self.hasMoreCommand:
+            self.current += 1
+            if self.current == len(self.commands) - 1:
+                self.hasMoreCommand = False
+            self.currentCommand = self.commands[self.current] 
+            print(self.currentCommand)
+        else:
+            return None 
