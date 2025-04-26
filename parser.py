@@ -10,8 +10,8 @@ class COMMAND_TYPE(enum.Enum):
 class Parser:
     current = None
     commands = []
-    currentCommand = None
-
+    currentCommand, currentCommandType = None, None
+    
     def __init__(self, path=None):
         if path is not None:
             self.path = os.path.dirname(__file__) + "/" + path
@@ -46,10 +46,37 @@ class Parser:
 
     def commandType(self) -> COMMAND_TYPE:
         if "@" in self.currentCommand:
+            self.currentCommandType = COMMAND_TYPE.A_COMMAND.value
             return COMMAND_TYPE.A_COMMAND
         elif "=" in self.currentCommand:
+            self.currentCommandType = COMMAND_TYPE.C_COMMAND.value
             return COMMAND_TYPE.C_COMMAND
         elif balanced(self.currentCommand):
+            self.currentCommandType = COMMAND_TYPE.L_COMMAND.value
             return COMMAND_TYPE.L_COMMAND
         else:
             raise("Invalid Command")
+    
+    def symbol(self) -> str:
+        if self.currentCommandType == COMMAND_TYPE.A_COMMAND.value or self.currentCommandType == COMMAND_TYPE.L_COMMAND:
+            return self.currentCommand.split("@")[1]
+        else:
+            return "Not an A or L command."
+    
+    def dest(self) -> str:
+        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
+            return self.currentCommand.split("=")[0].strip()
+        else:
+            return "Not a C command"
+    
+    def comp(self) -> str:
+        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
+            return self.currentCommand.split("=")[1].strip()
+        else:
+            return "Not a C command"
+    
+    def jump(self) -> str:
+        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
+            return self.currentCommand.split(";")[1].strip() if ";" in self.currentCommand else ""
+        else:
+            return "Not a C command"
