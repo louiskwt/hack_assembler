@@ -41,8 +41,7 @@ class Parser:
                 self.hasMoreCommand = False
             self.currentCommand = self.commands[self.current] 
             print(self.currentCommand + " " + self.commandType().value)
-        else:
-            return None
+        return None
 
     def commandType(self) -> COMMAND_TYPE:
         if "@" in self.currentCommand:
