@@ -30,7 +30,7 @@ class SymbolTable:
         self.next_address = 16
     
     def addEntry(self, symbol: str, address: int | None) -> None:
-        if not address:
+        if address is None:
             self.table[symbol] = self.next_address
         else:
             self.table[symbol] = address
