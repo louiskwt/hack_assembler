@@ -27,14 +27,12 @@ def main():
     
     p.restart()
     out = open(file_name.split(".")[0] + ".hack", "+w")
-    print(symbols.table)
 
     # Second pass
     while p.hasMoreCommand:
         p.advance()
         if p.currentCommandType == COMMAND_TYPE.A_COMMAND.value:
             symbol = p.symbol()
-            print(symbol)
             out.write("{0:016b}".format(symbols.getAddress(symbol)))
         elif p.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
             dest_code = p.dest()
