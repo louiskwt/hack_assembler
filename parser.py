@@ -79,3 +79,6 @@ class Parser:
             return self.currentCommand.split(";")[1].strip() if ";" in self.currentCommand else ""
         else:
             return "Not a C command"
+    
+    def restart(self) -> None:
+        self.current = -1
