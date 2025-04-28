@@ -1,10 +1,14 @@
+import argparse
 from parser import Parser, COMMAND_TYPE
 from code_generator import CodeGenerator
 from symbol_table import SymbolTable
 
 def main():
     print("-------------Hack Assembler-------------")
-    file_name = "PongL.asm" 
+    arg_parser = argparse.ArgumentParser(description="handle input assembly file")
+    arg_parser.add_argument("-f", dest="file", type=argparse.FileType('r'))
+    args = arg_parser.parse_args()
+    file_name = args.file.name
     p = Parser(file_name)
     code = CodeGenerator()
     symbols = SymbolTable()
