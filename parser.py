@@ -47,7 +47,7 @@ class Parser:
         if "@" in self.currentCommand:
             self.currentCommandType = COMMAND_TYPE.A_COMMAND.value
             return COMMAND_TYPE.A_COMMAND
-        elif "=" in self.currentCommand:
+        elif "=" in self.currentCommand or ";" in self.currentCommand:
             self.currentCommandType = COMMAND_TYPE.C_COMMAND.value
             return COMMAND_TYPE.C_COMMAND
         elif balanced(self.currentCommand):
@@ -63,22 +63,22 @@ class Parser:
             return "Not an A or L command."
     
     def dest(self) -> str:
-        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
+        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value and "=" in self.currentCommand:
             return self.currentCommand.split("=")[0].strip()
         else:
-            return "Not a C command"
+            return ""
     
     def comp(self) -> str:
-        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
+        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value and "=" in self.currentCommand:
             return self.currentCommand.split("=")[1].strip()
-        else:
-            return "Not a C command"
+        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value and ";" in self.currentCommand:
+            return self.currentCommand.split(";")[0].strip()
+        return self.currentCommand
     
     def jump(self) -> str:
-        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
+        if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value and ";" in self.currentCommand:
             return self.currentCommand.split(";")[1].strip() if ";" in self.currentCommand else ""
-        else:
-            return "Not a C command"
     
     def restart(self) -> None:
         self.current = -1
+        self.hasMoreCommand = True
