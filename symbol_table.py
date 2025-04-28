@@ -27,9 +27,13 @@ class SymbolTable:
             "SCREEN": 16384,
             "KBD": 24576,
         }
+        self.next_address = 16
     
-    def addEntry(self, symbol: str, address: int) -> None:
-        self.table[symbol] = address
+    def addEntry(self, symbol: str, address: int | None) -> None:
+        if not address:
+            self.table[symbol] = self.next_address
+        else:
+            self.table[symbol] = address
     
     def contains(self, symbol: str) -> bool:
         return symbol in self.table
