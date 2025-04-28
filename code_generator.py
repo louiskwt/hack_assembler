@@ -53,7 +53,7 @@ class CodeGenerator:
             assert len(a0_comp_bits) == 7, f"Expected length 7 from output, but got {len(a0_comp_bits)}" 
             return a0_comp_bits
         elif mnemonic in COMP_A1:
-            a1_comp_bits = "{0:07b}".format(COMP_A0[mnemonic])
+            a1_comp_bits = "{0:07b}".format(COMP_A1[mnemonic])
             assert len(a1_comp_bits) == 7, f"Expected length 7 from output, but got {len(a1_comp_bits)}" 
             return a1_comp_bits
         raise ValueError("Invalid Code")
