@@ -57,8 +57,10 @@ class Parser:
             raise("Invalid Command")
     
     def symbol(self) -> str:
-        if self.currentCommandType == COMMAND_TYPE.A_COMMAND.value or self.currentCommandType == COMMAND_TYPE.L_COMMAND:
+        if self.currentCommandType == COMMAND_TYPE.A_COMMAND.value:
             return self.currentCommand.split("@")[1]
+        if self.currentCommandType == COMMAND_TYPE.L_COMMAND.value:
+            return re.search('\(([^)]+)', self.currentCommand).group(1)
         else:
             return "Not an A or L command."
     
