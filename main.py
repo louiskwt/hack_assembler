@@ -15,15 +15,12 @@ def main():
     # first pass
     while p.hasMoreCommand:
         p.advance()
-        if p.currentCommandType == COMMAND_TYPE.A_COMMAND.value:
-            symbol = p.symbol()
-            if  not symbols.contains(symbol):
-                address = int(symbol) if symbol.isnumeric() else None
-                symbols.addEntry(symbol, address)
         if p.currentCommandType == COMMAND_TYPE.L_COMMAND.value:
             symbol = p.symbol()
             if not symbols.contains(symbol):
-                symbols.addEntry(symbol, p.current)
+                symbols.addEntry(symbol, p.line_count)
+                p.next_line(skip=True)
+        p.next_line()
     
     p.restart()
     out = open(file_name.split(".")[0] + ".hack", "+w")
@@ -33,7 +30,14 @@ def main():
         p.advance()
         if p.currentCommandType == COMMAND_TYPE.A_COMMAND.value:
             symbol = p.symbol()
-            out.write("{0:016b}".format(symbols.getAddress(symbol)))
+            if symbols.contains(symbol):
+                out.write("{0:016b}".format(symbols.getAddress(symbol)))
+            else:
+                if symbol.isnumeric(): 
+                    out.write("{0:016b}".format(int(symbol)))
+                else:
+                    symbols.addEntry(symbol, None)
+                    out.write("{0:016b}".format(symbols.getAddress(symbol)))
         elif p.currentCommandType == COMMAND_TYPE.C_COMMAND.value:
             dest_code = p.dest()
             dest = code.dest(dest_code if dest_code else "null")  
@@ -41,11 +45,8 @@ def main():
             jmp_code = p.jump() 
             jmp = code.jump(jmp_code if jmp_code else "null")
             out.write("{0:03b}".format(7) + comp + dest + jmp)
-        elif p.commandType == COMMAND_TYPE.L_COMMAND.value:
-            symbol = p.symbol() 
-            out.write("{0:016b}".format(symbols.getAddress(symbol)))
 
-        if p.current + 1 <= len(p.commands) - 1:
+        if p.current + 1 <= len(p.commands) - 1 and p.currentCommandType != COMMAND_TYPE.L_COMMAND.value:
             out.write("\n")
     out.close()
 
