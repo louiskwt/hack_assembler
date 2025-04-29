@@ -11,6 +11,7 @@ class Parser:
     current = None
     commands = []
     currentCommand, currentCommandType = None, None
+    line_count = 0
     
     def __init__(self, path=None):
         if path is not None:
@@ -40,7 +41,7 @@ class Parser:
             if self.current == len(self.commands) - 1:
                 self.hasMoreCommand = False
             self.currentCommand = self.commands[self.current] 
-            print(self.currentCommand + " " + self.commandType().value)
+            print(self.currentCommand + " " + self.commandType().value + " " + str(self.line_count))
         return None
 
     def commandType(self) -> COMMAND_TYPE:
@@ -84,3 +85,6 @@ class Parser:
     def restart(self) -> None:
         self.current = -1
         self.hasMoreCommand = True
+    
+    def next_line(self, skip: bool = False):
+        self.line_count += -1 if skip else 1
