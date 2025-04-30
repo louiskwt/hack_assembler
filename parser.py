@@ -41,7 +41,6 @@ class Parser:
             if self.current == len(self.commands) - 1:
                 self.hasMoreCommand = False
             self.currentCommand = self.commands[self.current] 
-            print(self.currentCommand + " " + self.commandType().value + " " + str(self.line_count))
         return None
 
     def commandType(self) -> COMMAND_TYPE:
@@ -63,7 +62,7 @@ class Parser:
         if self.currentCommandType == COMMAND_TYPE.L_COMMAND.value:
             return re.search('\(([^)]+)', self.currentCommand).group(1)
         else:
-            return "Not an A or L command."
+            return ""
     
     def dest(self) -> str:
         if self.currentCommandType == COMMAND_TYPE.C_COMMAND.value and "=" in self.currentCommand:
