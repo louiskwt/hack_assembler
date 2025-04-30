@@ -1,10 +1,11 @@
-import argparse
+import argparse, time
 from parser import Parser, COMMAND_TYPE
 from code_generator import CodeGenerator
 from symbol_table import SymbolTable
 
 def main():
     print("-------------Hack Assembler-------------")
+    start_time = time.time()
     arg_parser = argparse.ArgumentParser(description="handle input assembly file")
     arg_parser.add_argument("-f", dest="file", type=argparse.FileType('r'))
     args = arg_parser.parse_args()
@@ -49,6 +50,7 @@ def main():
         if p.current + 1 <= len(p.commands) - 1 and p.currentCommandType != COMMAND_TYPE.L_COMMAND.value:
             out.write("\n")
     out.close()
+    print(f"Compliation completed in %.2fs" % (time.time() - start_time))
 
 if __name__ == "__main__":
     main()
