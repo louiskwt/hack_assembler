@@ -9,6 +9,10 @@ def main():
     arg_parser = argparse.ArgumentParser(description="handle input assembly file")
     arg_parser.add_argument("-f", dest="file", type=argparse.FileType('r'))
     args = arg_parser.parse_args()
+    if not args.file:
+        print("Usage: python main -f FILENAME")
+        exit()
+        
     file_name = args.file.name
     p = Parser(file_name)
     code = CodeGenerator()
